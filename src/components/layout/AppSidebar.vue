@@ -2,7 +2,7 @@
   <aside class="sidebar">
     <div class="sidebar-brand">
       <h2>WP AI Post</h2>
-      <span>Internal Application for MKT Software</span>
+      <span>Made by Jebdev</span>
     </div>
 
     <div class="sidebar-user" v-if="authStore.user">
