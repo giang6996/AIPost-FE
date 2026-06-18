@@ -93,7 +93,7 @@ import {
   getOpenAiConfigApi,
   saveOpenAiConfigApi,
   deleteOpenAiConfigApi,
-} from '../../api/aiConfig'
+} from '@api/aiConfig'
 
 const openAiConfig = reactive({
   provider: 'openai',

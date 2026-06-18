@@ -878,12 +878,12 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import Editor from '@tinymce/tinymce-vue'
-import { useDraftStore } from '../../stores/draftStore'
-import { useSiteStore } from '../../stores/siteStore'
+import { useDraftStore } from '@stores/draftStore'
+import { useSiteStore } from '@stores/siteStore'
 import {
   publishDraftApi,
   deleteRemoteDraftPostApi,
-} from '../../api/publish'
+} from '@api/publish'
 import {
   generateImageApi,
   generatePostApi,
@@ -891,7 +891,7 @@ import {
   generateSeoApi,
   updateDraftSeoApi,
   getDraftSeoApi,
-} from '../../api/ai'
+} from '@api/ai'
 
 import {
   getDraftImagesApi,
@@ -902,7 +902,7 @@ import {
   setFeaturedDraftImageApi,
   updateDraftImageApi,
   deleteDraftImageApi,
-} from '../../api/media'
+} from '@api/media'
 
 import {
   getSiteCategoriesApi,
@@ -913,7 +913,7 @@ import {
   replaceDraftCategoriesApi,
   getDraftTagsApi,
   replaceDraftTagsApi,
-} from '../../api/taxonomy'
+} from '@api/taxonomy'
 
 const route = useRoute()
 const router = useRouter()
@@ -926,6 +926,7 @@ const activeTab = ref('visual')
 const draftSiteId = ref('')
 const imageSourceTab = ref('ai')
 const taxonomyTab = ref('assign')
+const draftFocusKeyword = ref('')
 
 const openSections = reactive({
   aiImage: true,
@@ -1199,6 +1200,10 @@ async function loadDraftSeo() {
     aiSeo.ogTitle = seo.ogTitle
     aiSeo.ogDescription = seo.ogDescription
     aiSeo.ogImageUrl = seo.ogImageUrl
+
+    if (seo.focusKeyword) {
+      draftFocusKeyword.value = seo.focusKeyword
+    }
   } catch (error) {
     const status = error?.response?.status
     if (status !== 404) {
@@ -1592,20 +1597,22 @@ const selectedSavedImage = computed(() => {
   ) || null
 })
 
-function extractGeneratedHtml(response) {
-  return (
-    response?.data?.contentHtml ||
-    response?.data?.html ||
-    response?.data?.content ||
-    response?.data?.generatedHtml ||
-    response?.data?.postContent ||
-    response?.contentHtml ||
-    response?.html ||
-    response?.content ||
-    response?.generatedHtml ||
-    response?.postContent ||
-    ''
-  )
+function extractGeneratedPost(response) {
+  const data = response?.data || response || {}
+
+  return {
+    contentHtml:
+      data.contentHtml ||
+      data.html ||
+      data.content ||
+      '',
+    focusKeyword:
+      typeof data.focusKeyword === 'string' ? data.focusKeyword.trim() : '',
+    estimatedWords:
+      typeof data.estimatedWords === 'number' ? data.estimatedWords : null,
+    modelName:
+      typeof data.modelName === 'string' ? data.modelName : '',
+  }
 }
 
 async function handleGenerateContent() {
@@ -1625,23 +1632,30 @@ async function handleGenerateContent() {
     }
 
     const response = await generatePostApi(payload)
-    const generatedHtml = extractGeneratedHtml(response)
+    const result = extractGeneratedPost(response)
 
-    if (!generatedHtml) {
+    if (!result.contentHtml) {
       throw new Error('No generated content was returned.')
     }
 
     if (aiContent.mode === 'append') {
       const current = form.contentHtml?.trim() || ''
       form.contentHtml = current
-        ? `${current}\n\n${generatedHtml}`
-        : generatedHtml
+        ? `${current}\n\n${result.contentHtml}`
+        : result.contentHtml
     } else {
-      form.contentHtml = generatedHtml
+      form.contentHtml = result.contentHtml
+    }
+
+    if (result.focusKeyword) {
+      draftFocusKeyword.value = result.focusKeyword
+      aiSeo.focusKeyword = result.focusKeyword
     }
 
     activeTab.value = 'visual'
-    aiContent.message = 'Content generated and inserted into the editor.'
+    aiContent.message = result.focusKeyword
+      ? `Content generated. Focus keyword: ${result.focusKeyword}`
+      : 'Content generated and inserted into the editor.'
   } catch (error) {
     aiContent.error =
       error?.response?.data?.message ||
@@ -2299,6 +2313,9 @@ async function handleGenerateSeo() {
       throw new Error('No valid SEO metadata was returned.')
     }
 
+    if (seo.focusKeyword?.trim()) {
+      draftFocusKeyword.value = seo.focusKeyword.trim()
+    }
     aiSeo.seoTitle = seo.seoTitle
     aiSeo.metaDescription = seo.metaDescription
     aiSeo.focusKeyword = seo.focusKeyword

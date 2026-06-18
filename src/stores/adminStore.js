@@ -11,7 +11,7 @@ import {
   adminListSitesApi,
   adminGetSiteApi,
   adminDeleteSiteApi,
-} from '../api/admin'
+} from '@api/admin'
 
 export const useAdminStore = defineStore('admin', {
   state: () => ({

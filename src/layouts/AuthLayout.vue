@@ -3,7 +3,7 @@
     <div class="auth-card">
       <div class="auth-brand">
         <h1>WP AI Post</h1>
-        <p>AI-assisted WordPress publishing desktop app</p>
+        <p>AI-assisted WordPress publishing web app</p>
       </div>
 
       <div class="auth-content">

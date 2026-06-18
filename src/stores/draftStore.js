@@ -5,7 +5,7 @@ import {
   createDraftApi,
   updateDraftApi,
   deleteDraftApi,
-} from '../api/drafts'
+} from '@api/drafts'
 
 function normalizeDraft(draft) {
   if (!draft || typeof draft !== 'object') {

@@ -5,7 +5,7 @@ import {
   updateSiteApi,
   deleteSiteApi,
   testSiteConnectionApi,
-} from '../api/sites'
+} from '@api/sites'
 
 function normalizeSite(site) {
   return {

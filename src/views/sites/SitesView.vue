@@ -126,7 +126,7 @@
 
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
-import { useSiteStore } from '../../stores/siteStore'
+import { useSiteStore } from '@stores/siteStore'
 
 const siteStore = useSiteStore()
 

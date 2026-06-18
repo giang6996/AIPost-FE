@@ -1,7 +1,7 @@
 <template>
   <div>
     <h2>Register</h2>
-    <p class="muted">Create your desktop publishing account.</p>
+    <p class="muted">Create your publishing account.</p>
 
     <form class="form" @submit.prevent="handleRegister">
       <input
@@ -42,7 +42,7 @@
 <script setup>
 import { reactive } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '../../stores/authStore'
+import { useAuthStore } from '@stores/authStore'
 
 const router = useRouter()
 const authStore = useAuthStore()

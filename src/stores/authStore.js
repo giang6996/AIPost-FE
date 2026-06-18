@@ -4,7 +4,7 @@ import {
   registerApi,
   getMeApi,
   logoutApi,
-} from '../api/auth'
+} from '@api/auth'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({

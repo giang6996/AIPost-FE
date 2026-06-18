@@ -1,29 +1,21 @@
 {
-  "name": "electron",
+  "name": "aipost-frontend",
   "private": true,
   "version": "0.0.0",
-  "type": "commonjs",
-  "main": "electron/main.js",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "electron": "electron .",
-    "electron:dev": "concurrently \"vite\" \"wait-on tcp:5173 && electron .\"",
-    "electron:preview": "vite build && electron .",
     "preview": "vite preview"
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^6.3.0",
     "axios": "^1.15.0",
-    "concurrently": "^9.2.1",
-    "electron": "^41.2.0",
-    "electron-builder": "^26.8.1",
     "pinia": "^3.0.4",
     "tinymce": "^8.4.0",
     "vue": "^3.5.32",
     "vue-router": "^4.6.4",
-    "vuestic-ui": "^1.10.3",
-    "wait-on": "^9.0.5"
+    "vuestic-ui": "^1.10.3"
   },
   "devDependencies": {
     "@rolldown/binding-win32-x64-msvc": "^1.0.0-rc.15",

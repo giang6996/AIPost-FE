@@ -204,7 +204,7 @@
 <script setup>
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useDraftStore } from '../../stores/draftStore'
+import { useDraftStore } from '@stores/draftStore'
 
 const router = useRouter()
 const draftStore = useDraftStore()

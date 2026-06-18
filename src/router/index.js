@@ -5,19 +5,19 @@ import {
   useRoute,
   useRouter,
 } from "vue-router";
-import { useAuthStore } from "../stores/authStore";
+import { useAuthStore } from "@stores/authStore";
 
-import AuthLayout from "../layouts/AuthLayout.vue";
-import AppLayout from "../layouts/AppLayout.vue";
+import AuthLayout from "@layouts/AuthLayout.vue";
+import AppLayout from "@layouts/AppLayout.vue";
 
-import LoginView from "../views/auth/LoginView.vue";
-import RegisterView from "../views/auth/RegisterView.vue";
-import DashboardView from "../views/dashboard/DashboardView.vue";
-import SitesView from "../views/sites/SitesView.vue";
-import DraftsView from "../views/drafts/DraftsView.vue";
-import DraftEditorView from "../views/drafts/DraftEditorView.vue";
-import SettingsView from "../views/settings/SettingsView.vue";
-import ProfileView from "../views/profile/ProfileView.vue";
+import LoginView from "@views/auth/LoginView.vue";
+import RegisterView from "@views/auth/RegisterView.vue";
+import DashboardView from "@views/dashboard/DashboardView.vue";
+import SitesView from "@views/sites/SitesView.vue";
+import DraftsView from "@views/drafts/DraftsView.vue";
+import DraftEditorView from "@views/drafts/DraftEditorView.vue";
+import SettingsView from "@views/settings/SettingsView.vue";
+import ProfileView from "@views/profile/ProfileView.vue";
 
 onBeforeRouteLeave((to, from, next) => {
   if (saveState.hasUnsavedChanges || saveState.isSaving) {
@@ -94,19 +94,19 @@ const routes = [
       {
         path: "/app/admin/users",
         name: "admin-users",
-        component: () => import("../views/admin/AdminUsersView.vue"),
+        component: () => import("@views/admin/adminUsersView.vue"),
         meta: { requiresAuth: true, requiresAdmin: true },
       },
       {
         path: "/app/admin/drafts",
         name: "admin-drafts",
-        component: () => import("../views/admin/AdminDraftsView.vue"),
+        component: () => import("@views/admin/adminDraftsView.vue"),
         meta: { requiresAuth: true, requiresAdmin: true },
       },
       {
         path: "/app/admin/sites",
         name: "admin-sites",
-        component: () => import("../views/admin/AdminSitesView.vue"),
+        component: () => import("@views/admin/adminSitesView.vue"),
         meta: { requiresAuth: true, requiresAdmin: true },
       },
     ],

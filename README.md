@@ -1,6 +1,6 @@
 # AIPost Frontend
 
-Frontend desktop/web client for **AIPost**, built with **Vue 3**, **Vite**, **Pinia**, **Vue Router**, and **Electron**.
+Frontend web client for **AIPost**, built with **Vue 3**, **Vite**, **Pinia**, and **Vue Router**.
 
 ## What it does
 
@@ -17,7 +17,6 @@ Frontend desktop/web client for **AIPost**, built with **Vue 3**, **Vite**, **Pi
 - Vite
 - Pinia
 - Vue Router
-- Electron
 - Axios
 - TinyMCE
 - Vuestic UI
@@ -47,9 +46,6 @@ Adjust the values to match your backend and TinyMCE account.
 - `npm run dev` — start the Vite dev server
 - `npm run build` — build the frontend for production
 - `npm run preview` — preview the production build
-- `npm run electron` — launch Electron
-- `npm run electron:dev` — run Vite and Electron together for development
-- `npm run electron:preview` — build then launch Electron
 
 ## Project structure
 
@@ -59,11 +55,30 @@ Adjust the values to match your backend and TinyMCE account.
 - `src/router` — route definitions
 - `src/stores` — Pinia stores
 - `src/views` — feature pages and screens
-- `electron` — Electron main process entry point
+
+## Import aliases
+
+Use path aliases for shared modules instead of deep relative imports like `../../stores/authStore`.
+
+- `@` — `src`
+- `@api` — `src/api`
+- `@assets` — `src/assets`
+- `@components` — `src/components`
+- `@layouts` — `src/layouts`
+- `@router` — `src/router`
+- `@stores` — `src/stores`
+- `@views` — `src/views`
+
+Example:
+
+```js
+import { useAuthStore } from '@stores/authStore'
+import AppLayout from '@layouts/AppLayout.vue'
+```
 
 ## Notes
 
 - API requests use the `auth_token` value from `localStorage`.
+- Routing currently uses Vue Router hash history.
 - The editor uses TinyMCE and requires a valid API key for full functionality.
 - Keep secrets out of git; only commit non-sensitive configuration examples.
-

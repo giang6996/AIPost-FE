@@ -1,0 +1,36 @@
+{
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ],
+      "@api/*": [
+        "src/api/*"
+      ],
+      "@assets/*": [
+        "src/assets/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@layouts/*": [
+        "src/layouts/*"
+      ],
+      "@router/*": [
+        "src/router/*"
+      ],
+      "@stores/*": [
+        "src/stores/*"
+      ],
+      "@views/*": [
+        "src/views/*"
+      ]
+    }
+  },
+  "exclude": [
+    "dist",
+    "node_modules"
+  ]
+}
