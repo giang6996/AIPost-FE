@@ -35,7 +35,7 @@ npm install
 Create a local `.env` file with the required variables:
 
 ```env
-VITE_API_BASE_URL=http://localhost:3000
+VITE_API_BASE_URL=http://localhost:3001
 VITE_TINYMCE_API_KEY=your_tinymce_api_key
 ```
 
