@@ -4,7 +4,7 @@ pipeline {
     environment {
         VITE_API_BASE_URL = 'https://api.jeblearning.pro.vn'
 
-        FRONTEND_S3_BUCKET = '<YOUR_FRONTEND_BUCKET_NAME>'
+        FRONTEND_S3_BUCKET = 'aipost-ec2-frontend-596261186564'
 
         AWS_REGION = 'ap-southeast-1'
     }
