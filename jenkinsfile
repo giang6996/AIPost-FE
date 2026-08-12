@@ -1,0 +1,73 @@
+pipeline {
+    agent any
+
+    environment {
+        VITE_API_BASE_URL = 'https://api.jeblearning.pro.vn'
+
+        FRONTEND_S3_BUCKET = '<YOUR_FRONTEND_BUCKET_NAME>'
+
+        AWS_REGION = 'ap-southeast-1'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm ci'
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                withCredentials([
+                    string(
+                        credentialsId: 'aipost-tinymce-api-key',
+                        variable: 'VITE_TINYMCE_API_KEY'
+                    )
+                ]) {
+                    sh '''
+                        npm run build
+                    '''
+                }
+            }
+        }
+
+        stage('Verify Build') {
+            steps {
+                sh '''
+                    test -d dist
+                    test -f dist/index.html
+
+                    echo "Frontend build verified."
+                '''
+            }
+        }
+
+        stage('Deploy to S3') {
+            steps {
+                sh '''
+                    aws s3 sync \
+                      dist/ \
+                      s3://${FRONTEND_S3_BUCKET} \
+                      --delete \
+                      --region ${AWS_REGION}
+                '''
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'AIPost frontend CI/CD succeeded.'
+        }
+
+        failure {
+            echo 'AIPost frontend CI/CD failed.'
+        }
+    }
+}
