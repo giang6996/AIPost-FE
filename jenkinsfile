@@ -27,6 +27,17 @@ pipeline {
                         ''',
                         returnStdout: true
                     ).trim()
+
+                    env.VITE_TINYMCE_API_KEY = sh(
+                        script: '''
+                            aws ssm get-parameter \
+                            --name "/aipost/ec2/frontend/TINYMCE_API_KEY" \
+                            --region "${AWS_REGION}" \
+                            --query 'Parameter.Value' \
+                            --output text
+                        ''',
+                        returnStdout: true
+                    ).trim()
                 }
             }
         }
@@ -39,15 +50,10 @@ pipeline {
 
         stage('Build Frontend') {
             steps {
-                withCredentials([
-                    string(
-                        credentialsId: 'aipost-tinymce-api-key',
-                        variable: 'VITE_TINYMCE_API_KEY'
-                    )
-                ]) {
-                    sh '''
-                        npm run build
-                    '''
+ 
+                sh '''
+                    npm run build
+                '''
                 }
             }
         }
