@@ -32,6 +32,7 @@ pipeline {
                         script: '''
                             aws ssm get-parameter \
                             --name "/aipost/ec2/frontend/TINYMCE_API_KEY" \
+                            --with-decryption \
                             --region "${AWS_REGION}" \
                             --query 'Parameter.Value' \
                             --output text
