@@ -4,8 +4,6 @@ pipeline {
     environment {
         VITE_API_BASE_URL = 'https://api.jeblearning.pro.vn'
 
-        FRONTEND_S3_BUCKET = 'aipost-ec2-frontend-596261186564'
-
         AWS_REGION = 'ap-southeast-1'
     }
 
@@ -13,6 +11,23 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm
+            }
+        }
+
+        stage('Load Deployment Config') {
+            steps {
+                script {
+                    env.FRONTEND_S3_BUCKET = sh(
+                        script: '''
+                            aws ssm get-parameter \
+                            --name "/aipost/ec2/frontend/S3_FRONTEND_BUCKET" \
+                            --region "${AWS_REGION}" \
+                            --query 'Parameter.Value' \
+                            --output text
+                        ''',
+                        returnStdout: true
+                    ).trim()
+                }
             }
         }
 
