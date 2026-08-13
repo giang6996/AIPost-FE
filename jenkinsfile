@@ -2,9 +2,10 @@ pipeline {
     agent any
 
     environment {
-        VITE_API_BASE_URL = 'https://api.jeblearning.pro.vn'
 
         AWS_REGION = 'ap-southeast-1'
+
+        ENVIRONMENT_BOOTSTRAP_PARAMETER = "/aipost-bootstrap/ec2"
     }
 
     stages {
@@ -17,26 +18,48 @@ pipeline {
         stage('Load Deployment Config') {
             steps {
                 script {
-                    env.FRONTEND_S3_BUCKET = sh(
-                        script: '''
+                    env.SSM_PARAMETER_PREFIX = sh(
+                        script: """
                             aws ssm get-parameter \
-                            --name "/aipost/ec2/frontend/S3_FRONTEND_BUCKET" \
+                            --name "${ENVIRONMENT_BOOTSTRAP_PARAMETER}" \
                             --region "${AWS_REGION}" \
                             --query 'Parameter.Value' \
                             --output text
-                        ''',
+                        """,
+                        returnStdout: true
+                    ).trim()
+
+                    env.FRONTEND_S3_BUCKET = sh(
+                        script: """
+                            aws ssm get-parameter \
+                            --name "${env.SSM_PARAMETER_PREFIX}/frontend/S3_FRONTEND_BUCKET" \
+                            --region "${AWS_REGION}" \
+                            --query 'Parameter.Value' \
+                            --output text
+                        """,
                         returnStdout: true
                     ).trim()
 
                     env.VITE_TINYMCE_API_KEY = sh(
-                        script: '''
+                        script: """
                             aws ssm get-parameter \
-                            --name "/aipost/ec2/frontend/TINYMCE_API_KEY" \
+                            --name "${env.SSM_PARAMETER_PREFIX}/frontend/TINYMCE_API_KEY" \
                             --with-decryption \
                             --region "${AWS_REGION}" \
                             --query 'Parameter.Value' \
                             --output text
-                        ''',
+                        """,
+                        returnStdout: true
+                    ).trim()
+
+                    env.VITE_API_BASE_URL = sh(
+                        script: """
+                            aws ssm get-parameter \
+                            --name "${env.SSM_PARAMETER_PREFIX}/backend/API_URL" \
+                            --region "${AWS_REGION}" \
+                            --query 'Parameter.Value' \
+                            --output text
+                        """,
                         returnStdout: true
                     ).trim()
                 }
