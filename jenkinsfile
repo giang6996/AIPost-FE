@@ -73,7 +73,8 @@ pipeline {
                         returnStdout: true
                     ).trim()
 
-                    env.VITE_API_BASE_URL = sh(
+                    // Fix API url missing protocol
+                    def apiDomain = sh(
                         script: """
                             aws ssm get-parameter \
                             --name "${env.SSM_PARAMETER_PREFIX}/backend/API_URL" \
@@ -83,6 +84,8 @@ pipeline {
                         """,
                         returnStdout: true
                     ).trim()
+
+                    env.VITE_API_BASE_URL = "https://${apiDomain}"
                 }
             }
         }
