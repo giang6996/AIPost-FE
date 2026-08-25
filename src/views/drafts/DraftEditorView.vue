@@ -876,7 +876,7 @@
 
 <script setup>
 import { computed, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import Editor from '@tinymce/tinymce-vue'
 import { useDraftStore } from '@stores/draftStore'
 import { useSiteStore } from '@stores/siteStore'
@@ -2444,6 +2444,21 @@ async function handleDeleteRemotePost(force = false) {
     publishState.isDeletingRemote = false
   }
 }
+
+
+onBeforeRouteLeave((to, from, next) => {
+  if (saveState.hasUnsavedChanges || saveState.isSaving) {
+    const confirmed = window.confirm(
+      "You have unsaved changes. Are you sure you want to leave this page?",
+    );
+
+    if (!confirmed) {
+      return next(false);
+    }
+  }
+
+  next();
+});
 
 watch(
   () => route.params.id,

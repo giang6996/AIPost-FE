@@ -19,20 +19,6 @@ import DraftEditorView from "@views/drafts/DraftEditorView.vue";
 import SettingsView from "@views/settings/SettingsView.vue";
 import ProfileView from "@views/profile/ProfileView.vue";
 
-onBeforeRouteLeave((to, from, next) => {
-  if (saveState.hasUnsavedChanges || saveState.isSaving) {
-    const confirmed = window.confirm(
-      "You have unsaved changes. Are you sure you want to leave this page?",
-    );
-
-    if (!confirmed) {
-      return next(false);
-    }
-  }
-
-  next();
-});
-
 const routes = [
   {
     path: "/",
