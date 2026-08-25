@@ -101,6 +101,7 @@ pipeline {
                         script: """
                             aws ssm get-parameter \
                             --name "${env.SSM_PARAMETER_PREFIX}/jenkins/NETLIFY_SITE_ID" \
+                            --with-decryption \
                             --region "${AWS_REGION}" \
                             --query 'Parameter.Value' \
                             --output text
