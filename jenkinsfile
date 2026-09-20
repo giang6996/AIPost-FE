@@ -5,6 +5,7 @@ pipeline {
         githubPush()
     }
 
+    // Test Comment
     parameters {
         choice (
             name: 'DEPLOY_TARGET',
@@ -77,7 +78,7 @@ pipeline {
                         returnStdout: true
                     ).trim()
 
-                    // Fix API url missing protocol
+                    // Fix API url missing HTTPS header protocol
                     def apiDomain = sh(
                         script: """
                             aws ssm get-parameter \
