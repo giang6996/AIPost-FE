@@ -8,7 +8,7 @@ pipeline {
     parameters {
         choice (
             name: 'DEPLOY_TARGET',
-            choices: ['netlify', 's3'],
+            choices: ['all','s3','netlify'],
             description: 'Frontend deployment destination'
         )
     }
@@ -98,7 +98,7 @@ pipeline {
 
             when {
                 expression {
-                    params.DEPLOY_TARGET == 'netlify'
+                    env.DEPLOY_TARGET == 'all' || env.DEPLOY_TARGET == 'netlify'
                 }
             }
 
@@ -163,7 +163,7 @@ pipeline {
 
             when {
                 expression {
-                    env.DEPLOY_TARGET == 's3'
+                   env.DEPLOY_TARGET == 'all' || env.DEPLOY_TARGET == 's3'
                 }
             }
             steps {
@@ -180,7 +180,7 @@ pipeline {
         stage('Deploy to Netlify') {
             when {
                 expression {
-                    env.DEPLOY_TARGET == 'netlify'
+                   env.DEPLOY_TARGET == 'all' || env.DEPLOY_TARGET == 'netlify'
                 }
             }
 
@@ -218,7 +218,7 @@ pipeline {
         stage('Verify S3 Deployment') {
             when {
                 expression {
-                    params.DEPLOY_TARGET == 's3'
+                    env.DEPLOY_TARGET == 'all' || env.DEPLOY_TARGET == 's3'
                 }
             }
 
