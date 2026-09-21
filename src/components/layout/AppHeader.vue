@@ -30,7 +30,7 @@ async function handleLogout() {
 .app-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-end;
   padding: 18px 24px;
   background: white;
   border-bottom: 1px solid #e5e7eb;
