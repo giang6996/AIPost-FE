@@ -1,7 +1,7 @@
 <template>
   <aside class="sidebar">
     <div class="sidebar-brand">
-      <h2>WP AI Post</h2>
+      <h2>AIPost</h2>
       <span>Made by Jebdev</span>
     </div>
 

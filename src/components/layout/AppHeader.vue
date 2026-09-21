@@ -1,10 +1,5 @@
 <template>
   <header class="app-header">
-    <div>
-      <h1 class="title">WP AI Post</h1>
-      <p class="subtitle">Desktop publishing workspace</p>
-    </div>
-
     <div class="header-actions">
       <div class="user-info" v-if="authStore.user">
         <strong>{{ authStore.userName }}</strong>
